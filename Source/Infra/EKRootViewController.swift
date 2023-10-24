@@ -65,11 +65,19 @@ class EKRootViewController: UIViewController {
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         guard let lastAttributes = lastAttributes else {
-            return super.supportedInterfaceOrientations
+            if #available(iOS 13.0, *) {
+                return UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.first?.rootViewController?.supportedInterfaceOrientations ?? super.supportedInterfaceOrientations
+            } else {
+                return super.supportedInterfaceOrientations
+            }
         }
         switch lastAttributes.positionConstraints.rotation.supportedInterfaceOrientations {
         case .standard:
-            return super.supportedInterfaceOrientations
+            if #available(iOS 13.0, *) {
+                return UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.first?.rootViewController?.supportedInterfaceOrientations ?? super.supportedInterfaceOrientations
+            } else {
+                return super.supportedInterfaceOrientations
+            }
         case .all:
             return .all
         case .specified(let orientation):
