@@ -19,7 +19,13 @@ class EKRootViewController: UIViewController {
     
     private unowned let delegate: EntryPresenterDelegate
     
-    private var lastAttributes: EKAttributes!
+    private var lastAttributes: EKAttributes! {
+        didSet {
+          if #available(iOS 16.0, *) {
+            self.setNeedsUpdateOfSupportedInterfaceOrientations()
+          }
+        }
+    }
     
     private let backgroundView = EKBackgroundView()
 
